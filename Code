@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int helper(vector<int>& nums , int start, int end)
+    {
+        if(start>end)
+        {
+            return 0;
+        }
+        vector<int> with,without;
+        for(int i=0;i<nums.size();i++)
+        {
+            with.push_back(-1);
+            without.push_back(-1);
+        }
+        
+        with[end]=nums[end];
+        without[end]=0;
+        
+        for(int i=end-1;i>=start;i--)
+        {
+            without[i]=max(with[i+1],without[i+1]);
+            with[i] = (nums[i]+without[i+1]);
+        }
+        return max(with[start],without[start]);
+    }
+    int rob(vector<int>& nums) {
+        if(nums.size()==0)
+        {
+            return 0;
+        }
+        if(nums.size()==1)
+        {
+            return nums[0];
+        }
+        if(nums.size()==2)
+        {
+            return max(nums[0],nums[1]);
+        }
+        int ans1=nums[0]+helper(nums,2,nums.size()-2);
+        int ans2=helper(nums,1,nums.size()-1);
+        return max(ans1,ans2);
+    }
+};
